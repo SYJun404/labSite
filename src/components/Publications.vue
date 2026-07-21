@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from "vue";
 import { publications } from "../data/publications";
 
 const activeTag = ref("全部");
 
-const allTags = computed(() => {
+const allTags: any = computed(() => {
     const set = new Set();
     publications.forEach((p) => p.tags.forEach((t) => set.add(t)));
     return ["全部", ...Array.from(set)];
@@ -15,13 +15,13 @@ const filtered = computed(() => {
     return publications.filter((p) => p.tags.includes(activeTag.value));
 });
 
-const grouped = computed(() => {
-    const map = {};
+const grouped: any = computed(() => {
+    const map: any = {};
     filtered.value.forEach((p) => {
         if (!map[p.year]) map[p.year] = [];
         map[p.year].push(p);
     });
-    return Object.entries(map).sort((a, b) => b[0] - a[0]);
+    return Object.entries(map).sort((a: any, b: any) => b[0] - a[0]);
 });
 </script>
 

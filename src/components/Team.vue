@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { pi, faculty, students, alumni } from "../data/team";
 </script>
 

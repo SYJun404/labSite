@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { lab } from "../data/research";
 </script>
 

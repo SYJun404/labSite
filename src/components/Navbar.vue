@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
 import { lab } from "../data/research";
 import { useTheme } from "../composables/useTheme";
@@ -10,7 +10,6 @@ const menuOpen = ref(false);
 const links = [
     { label: "研究方向", href: "#research" },
     { label: "论文成果", href: "#publications" },
-    { label: "数据洞察", href: "#insights" },
     { label: "团队成员", href: "#team" },
     { label: "招生宣传", href: "#admissions" },
     { label: "联系我们", href: "#contact" },

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { admissionTracks, applicationSteps } from "../data/news";
 </script>
 
