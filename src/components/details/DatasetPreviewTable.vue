@@ -113,7 +113,7 @@ function formatNumber(n: number): string {
                 @click.self="showModal = false"
             >
                 <div
-                    class="relative w-[90vw] h-[85vh] card hover:border-border/60 flex flex-col overflow-hidden"
+                    class="relative w-full mx-[4.7rem] h-[85vh] card hover:border-border/60 flex flex-col overflow-hidden"
                 >
                     <!-- 模态框头部 -->
                     <div

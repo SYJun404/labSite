@@ -11,7 +11,7 @@ function formatNumber(n: number): string {
 </script>
 
 <template>
-    <aside class="space-y-4 lg:sticky lg:top-28 self-start">
+    <aside class="space-y-4">
         <button class="btn-primary w-full justify-center">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
