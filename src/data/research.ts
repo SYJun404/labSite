@@ -25,8 +25,8 @@ export const lab: LabInfo = {
     nameZh: "智能感知与学习实验室",
     nameEn: "Intelligent Perception & Learning Lab",
     shortName: "IPLL",
-    affiliation: "计算机科学与技术学院",
-    university: "某某大学",
+    affiliation: "人工智能学院",
+    university: "重庆邮电大学",
     tagline: "探索感知、推理与决策的统一计算原理",
     taglineEn:
         "Toward a unified computational account of perception, reasoning and action.",

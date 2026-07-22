@@ -8,9 +8,9 @@ import { lab } from "../data/research";
             <div>
                 <div class="flex items-center gap-3 mb-4">
                     <span
-                        class="w-9 h-9 rounded-lg bg-signal-gradient flex items-center justify-center font-mono text-xs font-bold text-bg"
+                        class="w-9 h-9 rounded-lg flex items-center justify-center"
                     >
-                        {{ lab.shortName }}
+                        <img src="/svg/cqupt.svg" alt="Logo" />
                     </span>
                     <span class="font-display font-semibold text-fg">{{
                         lab.nameZh

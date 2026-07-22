@@ -33,8 +33,8 @@ import { lab } from "../data/research";
                 </p>
 
                 <div class="mt-10 flex flex-wrap gap-4">
-                    <a href="#research" class="btn-primary">
-                        探索研究方向
+                    <a href="#datasets" class="btn-primary">
+                        查看数据样本
                         <span aria-hidden="true">→</span>
                     </a>
                     <a href="#admissions" class="btn-ghost">加入实验室</a>

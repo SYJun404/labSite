@@ -8,11 +8,11 @@ const scrolled = ref(false);
 const menuOpen = ref(false);
 
 const links = [
+    { label: "数据样本", href: "#datasets" },
     { label: "研究方向", href: "#research" },
     { label: "论文成果", href: "#publications" },
     { label: "团队成员", href: "#team" },
     { label: "招生宣传", href: "#admissions" },
-    { label: "联系我们", href: "#contact" },
 ];
 
 function onScroll() {
@@ -37,22 +37,24 @@ function closeMenu() {
         "
     >
         <nav
-            class="flex items-center justify-between px-6 md:px-12 lg:px-20 h-20"
+            class="relative flex items-center justify-between px-6 md:px-12 lg:px-20 h-20"
         >
             <a href="#top" class="flex items-center gap-3 group">
                 <span
-                    class="w-9 h-9 rounded-lg bg-signal-gradient flex items-center justify-center font-mono text-xs font-bold text-[#0A0B0F]"
+                    class="w-9 h-9 rounded-lg flex items-center justify-center"
                 >
-                    {{ lab.shortName }}
+                    <img src="/svg/cqupt.svg" alt="Logo" />
                 </span>
                 <span
-                    class="font-display font-semibold text-fg tracking-tight hidden sm:block"
+                    class="font-display text-sm font-semibold text-fg tracking-tight hidden sm:block"
                 >
                     {{ lab.nameZh }}
                 </span>
             </a>
 
-            <ul class="hidden lg:flex items-center gap-9">
+            <ul
+                class="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center gap-9"
+            >
                 <li v-for="link in links" :key="link.href">
                     <a
                         :href="link.href"
