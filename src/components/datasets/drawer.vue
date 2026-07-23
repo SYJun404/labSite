@@ -27,6 +27,10 @@ defineProps<{
     title?: string;
     placement?: "left" | "right";
 }>();
+
+const navigateToDataset = (id: string) => {
+    window.open("/datasets/" + id, "_blank");
+};
 </script>
 
 <template>
@@ -41,13 +45,13 @@ defineProps<{
             bodyContentStyle="padding:12px 24px"
         >
             <div class="flex flex-col gap-3">
-                <a
+                <div
                     v-for="d in datasets"
                     :key="d.id"
                     :href="'/datasets/' + d.id"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="group flex gap-4 rounded-xl border border-border/60 bg-surface-alt/30 p-4 hover:bg-surface-alt/80 transition-colors duration-200"
+                    class="group flex gap-4 rounded-xl border border-border/60 bg-surface-alt/30 p-4 hover:bg-surface-alt/80 transition-colors duration-200 cursor-default"
                 >
                     <div
                         class="w-11 h-11 shrink-0 rounded-xl bg-surface-alt border border-border flex items-center justify-center"
@@ -60,7 +64,8 @@ defineProps<{
                     </div>
                     <div class="min-w-0 flex-1">
                         <h4
-                            class="text-fg font-medium group-hover:text-accent-cyan transition-colors duration-200 truncate"
+                            @click="() => navigateToDataset(d.id)"
+                            class="text-fg cursor-pointer font-medium group-hover:text-accent-cyan transition-colors duration-200 truncate"
                         >
                             {{ d.name }}
                         </h4>
@@ -134,7 +139,7 @@ defineProps<{
                             </span>
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
         </n-drawer-content>
     </n-drawer>

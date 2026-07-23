@@ -67,6 +67,10 @@ const sections = computed<SectionConfig[]>(() => [
         datasets: newDatasets.value,
     },
 ]);
+
+const navigateToDataset = (id: string) => {
+    window.open("/datasets/" + id, "_blank");
+};
 </script>
 
 <template>
@@ -110,13 +114,11 @@ const sections = computed<SectionConfig[]>(() => [
                     </h3>
                 </div>
                 <div class="divide-y divide-border/50">
-                    <a
+                    <div
                         v-for="d in section.datasets"
                         :key="d.id"
-                        :href="'/datasets/' + d.id"
-                        target="_blank"
                         rel="noopener noreferrer"
-                        class="group flex gap-4 px-6 py-5 hover:bg-surface-alt/60 transition-colors duration-200"
+                        class="group flex gap-4 px-6 py-5 hover:bg-surface-alt/60 transition-colors duration-200 cursor-default"
                     >
                         <div
                             class="w-12 h-12 shrink-0 rounded-xl bg-surface-alt border border-border flex items-center justify-center"
@@ -129,7 +131,8 @@ const sections = computed<SectionConfig[]>(() => [
                         </div>
                         <div class="min-w-0 flex-1">
                             <h4
-                                class="text-fg font-medium group-hover:text-accent-cyan transition-colors duration-200 truncate"
+                                @click="() => navigateToDataset(d.id)"
+                                class="text-fg font-medium group-hover:text-accent-cyan transition-colors duration-200 truncate cursor-pointer"
                             >
                                 {{ d.name }}
                             </h4>
@@ -201,7 +204,7 @@ const sections = computed<SectionConfig[]>(() => [
                                 </span>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
                 <div class="px-6 py-4 border-t border-border/60 text-center">
                     <a

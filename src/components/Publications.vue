@@ -133,18 +133,18 @@ const selectedItems = computed(() => {
                     <article
                         v-for="pub in selectedItems"
                         :key="pub.title"
-                        class="card p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+                        class="group card p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
                     >
                         <div class="flex-1">
                             <div class="flex items-center gap-3 flex-wrap">
                                 <h4
-                                    class="font-display text-lg text-fg font-medium"
+                                    class="font-display cursor-pointer group-hover:text-accent-cyan transition-colors duration-300 text-lg text-fg font-medium"
                                 >
                                     {{ pub.title }}
                                 </h4>
                                 <span
                                     v-if="pub.highlight"
-                                    class="tag-pill !bg-signal-gradient !text-[#0A0B0F] !border-none font-semibold"
+                                    class="tag-pill !bg-signal-gradient !text-white !border-none font-semibold"
                                 >
                                     Spotlight
                                 </span>
