@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type { DatasetDetail } from "../../data/datasetDetail";
+import BaseModal from "../shared/BaseModal.vue";
 
 defineProps<{
     d: DatasetDetail;
 }>();
 
 const isOpen = ref(true);
+const showModal = ref(false);
 </script>
 
 <template>
@@ -19,6 +21,7 @@ const isOpen = ref(true);
                 <button
                     class="text-fg-faint hover:text-fg transition-colors duration-200"
                     title="全屏查看"
+                    @click.stop="showModal = true"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -53,22 +56,24 @@ const isOpen = ref(true);
                 </thead>
                 <tbody class="divide-y divide-border/40">
                     <tr v-for="v in d.variables" :key="v.name">
-                        <td class="px-8 py-3 font-mono text-fg">
+                        <td
+                            class="px-8 py-3 font-mono text-fg whitespace-nowrap"
+                        >
                             {{ v.name }}
                         </td>
-                        <td class="px-4 py-3 text-fg-subtle">
+                        <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
                             {{ v.role }}
                         </td>
-                        <td class="px-4 py-3 text-fg-subtle">
+                        <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
                             {{ v.type }}
                         </td>
-                        <td class="px-4 py-3 text-fg-subtle">
+                        <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
                             {{ v.description || "—" }}
                         </td>
-                        <td class="px-4 py-3 text-fg-subtle">
+                        <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
                             {{ v.unit || "—" }}
                         </td>
-                        <td class="px-8 py-3 text-fg-subtle">
+                        <td class="px-8 py-3 text-fg-subtle whitespace-nowrap">
                             {{ v.missing ? "yes" : "no" }}
                         </td>
                     </tr>
@@ -76,4 +81,68 @@ const isOpen = ref(true);
             </table>
         </div>
     </div>
+
+    <!-- 全屏模态框 -->
+    <BaseModal v-model="showModal" title="变量表格">
+        <table class="w-full text-sm min-w-[640px]">
+            <thead>
+                <tr
+                    class="text-left font-mono text-xs uppercase tracking-wide text-fg-faint"
+                >
+                    <th
+                        class="sticky top-0 bg-surface-alt/70 px-8 py-3 font-medium z-10"
+                    >
+                        Variable Name
+                    </th>
+                    <th
+                        class="sticky top-0 bg-surface-alt/70 px-4 py-3 font-medium z-10"
+                    >
+                        Role
+                    </th>
+                    <th
+                        class="sticky top-0 bg-surface-alt/70 px-4 py-3 font-medium z-10"
+                    >
+                        Type
+                    </th>
+                    <th
+                        class="sticky top-0 bg-surface-alt/70 px-4 py-3 font-medium z-10"
+                    >
+                        Description
+                    </th>
+                    <th
+                        class="sticky top-0 bg-surface-alt/70 px-4 py-3 font-medium z-10"
+                    >
+                        Unit
+                    </th>
+                    <th
+                        class="sticky top-0 bg-surface-alt/70 px-8 py-3 font-medium z-10"
+                    >
+                        Missing
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-border/40">
+                <tr v-for="v in d.variables" :key="v.name">
+                    <td class="px-8 py-3 font-mono text-fg whitespace-nowrap">
+                        {{ v.name }}
+                    </td>
+                    <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
+                        {{ v.role }}
+                    </td>
+                    <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
+                        {{ v.type }}
+                    </td>
+                    <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
+                        {{ v.description || "—" }}
+                    </td>
+                    <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
+                        {{ v.unit || "—" }}
+                    </td>
+                    <td class="px-8 py-3 text-fg-subtle whitespace-nowrap">
+                        {{ v.missing ? "yes" : "no" }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </BaseModal>
 </template>

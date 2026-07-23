@@ -11,15 +11,46 @@ const isOpen = ref(true);
 
 <template>
     <div class="card overflow-hidden">
-        <button
+        <div
             class="w-full flex items-center justify-between px-8 py-6 text-left"
-            @click="isOpen = !isOpen"
         >
             <h2 class="font-display text-xl text-fg font-semibold">数据介绍</h2>
-            <span class="text-fg-faint font-mono text-lg w-5 text-center">{{
-                isOpen ? "−" : "+"
-            }}</span>
-        </button>
+            <span
+                @click="isOpen = !isOpen"
+                class="text-fg-faint hover:text-fg cursor-pointer"
+            >
+                <svg
+                    v-if="isOpen"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    class="w-5 h-5"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M5 12h14"
+                    />
+                </svg>
+                <svg
+                    v-else
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    class="w-5 h-5"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 5v14m-7-7h14"
+                    />
+                </svg>
+            </span>
+        </div>
         <div
             v-show="isOpen"
             class="px-8 pb-8 pt-2 space-y-6 border-t border-border/60"
