@@ -29,8 +29,8 @@ import { lab } from "../data/research";
                 </p>
                 <ul class="space-y-2 text-sm text-fg-subtle">
                     <li>{{ lab.email }}</li>
-                    <li>{{ lab.address }}</li>
                     <li>{{ lab.location }}</li>
+                    <li>{{ lab.address }}</li>
                 </ul>
             </div>
 
@@ -45,8 +45,8 @@ import { lab } from "../data/research";
                         <a
                             :href="lab.github"
                             class="text-fg-subtle hover:text-accent-cyan transition-colors"
-                            >GitHub ↗</a
-                        >
+                            >GitHub->
+                        </a>
                     </li>
                     <li>
                         <a
@@ -73,10 +73,7 @@ import { lab } from "../data/research";
                 &copy; {{ new Date().getFullYear() }} {{ lab.nameZh }}. All
                 rights reserved.
             </p>
-            <p>
-                Template for academic research groups · Built with Vue 3 +
-                Tailwind CSS
-            </p>
+            <p>Powered By ...</p>
         </div>
     </footer>
 </template>

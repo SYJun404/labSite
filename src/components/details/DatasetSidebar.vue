@@ -37,44 +37,6 @@ function formatNumber(n: number): string {
             引用数据集
         </button>
 
-        <div class="card p-6 flex flex-col gap-3">
-            <p class="flex items-center gap-2 text-sm text-fg-subtle">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    class="w-4 h-4 text-fg-faint"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M7 7h4v4c0 2.5-1.5 4-4 4v-2c1 0 2-.7 2-2H7V7zm7 0h4v4c0 2.5-1.5 4-4 4v-2c1 0 2-.7 2-2h-2V7z"
-                    />
-                </svg>
-                {{ formatNumber(d.citations) }} citations
-            </p>
-            <p class="flex items-center gap-2 text-sm text-fg-subtle">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    class="w-4 h-4 text-fg-faint"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"
-                    />
-                    <circle cx="12" cy="12" r="2.6" />
-                </svg>
-                {{ formatNumber(d.views) }} views
-            </p>
-        </div>
-
         <div class="card p-6">
             <p
                 class="font-mono text-xs uppercase tracking-wide text-fg-faint mb-3"
@@ -121,16 +83,50 @@ function formatNumber(n: number): string {
 
         <div class="card p-6">
             <p
-                class="font-mono text-xs uppercase tracking-wide text-fg-faint mb-3"
+                class="font-mono text-xs uppercase tracking-wide text-fg-faint mb-4"
             >
-                DOI
+                reference
             </p>
-            <a
-                :href="`https://doi.org/${d.doi}`"
-                class="font-mono text-sm text-accent-blue hover:text-accent-cyan transition-colors duration-200 break-all"
-            >
-                {{ d.doi }}
-            </a>
+            <ul class="space-y-4">
+                <li v-for="p in d.citingPapers" :key="p.title" class="group">
+                    <a
+                        :href="p.url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="block -mx-2 px-2 py-2 cursor-default"
+                    >
+                        <p
+                            class="text-sm font-medium leading-snug mb-1 transition-colors duration-200 cursor-pointer text-accent-cyan hover:text-accent-blue underline underline-offset-2"
+                        >
+                            {{ p.title }}
+                        </p>
+                        <p class="text-xs text-fg-subtle leading-relaxed">
+                            By {{ p.authors }}.
+                            <template v-if="p.year">{{ p.year }}</template>
+                        </p>
+                        <p
+                            class="text-xs text-fg-faint mt-0.5 flex items-center gap-1"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                class="w-3 h-3"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 6v6l4 2"
+                                />
+                                <circle cx="12" cy="12" r="8" />
+                            </svg>
+                            Published in {{ p.publishedIn }}
+                        </p>
+                    </a>
+                </li>
+            </ul>
         </div>
 
         <div class="card p-6">
@@ -141,12 +137,7 @@ function formatNumber(n: number): string {
             </p>
             <p class="text-xs text-fg-subtle leading-relaxed">
                 This dataset is licensed under a
-                <a
-                    :href="d.licenseHref"
-                    class="text-accent-cyan hover:text-accent-blue underline underline-offset-2 transition-colors duration-200"
-                >
-                    {{ d.licenseName }}
-                </a>
+                {{ d.licenseName }}
                 license.
             </p>
             <p class="text-xs text-fg-faint leading-relaxed mt-3">

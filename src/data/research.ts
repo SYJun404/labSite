@@ -32,10 +32,10 @@ export const lab: LabInfo = {
         "Toward a unified computational account of perception, reasoning and action.",
     description:
         "实验室成立于 2016 年，隶属计算机科学与技术学院，专注于多模态学习、具身智能、大模型对齐与可信机器学习等方向的基础研究与系统落地，与多家国家重点实验室及企业研究院保持长期合作。",
-    email: "contact@ipll-lab.edu.cn",
-    address: "计算机科学与技术学院 · 智华楼 5 层",
+    email: "contact@lab.edu.cn",
+    address: "重庆邮电大学 · 信息科技大楼 1201",
     github: "https://github.com/ipll-lab",
-    location: "中国 · 北京",
+    location: "重庆市南岸区崇文路2号",
 };
 
 export const researchAreas: ResearchArea[] = [

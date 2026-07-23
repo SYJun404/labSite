@@ -16,7 +16,7 @@ const showModal = ref(false);
         <div
             class="w-full flex items-center justify-between px-8 py-6 text-left"
         >
-            <h2 class="font-display text-xl text-fg font-semibold">变量表格</h2>
+            <h2 class="font-display text-xl text-fg font-semibold">字段说明</h2>
             <span class="flex items-center gap-3 shrink-0">
                 <button
                     class="text-fg-faint hover:text-fg transition-colors duration-200"
@@ -83,42 +83,18 @@ const showModal = ref(false);
     </div>
 
     <!-- 全屏模态框 -->
-    <BaseModal v-model="showModal" title="变量表格">
+    <BaseModal v-model="showModal" title="字段说明">
         <table class="w-full text-sm min-w-[640px]">
             <thead>
                 <tr
                     class="text-left font-mono text-xs uppercase tracking-wide text-fg-faint"
                 >
-                    <th
-                        class="sticky top-0 bg-surface-alt/70 px-8 py-3 font-medium z-10"
-                    >
-                        Variable Name
-                    </th>
-                    <th
-                        class="sticky top-0 bg-surface-alt/70 px-4 py-3 font-medium z-10"
-                    >
-                        Role
-                    </th>
-                    <th
-                        class="sticky top-0 bg-surface-alt/70 px-4 py-3 font-medium z-10"
-                    >
-                        Type
-                    </th>
-                    <th
-                        class="sticky top-0 bg-surface-alt/70 px-4 py-3 font-medium z-10"
-                    >
-                        Description
-                    </th>
-                    <th
-                        class="sticky top-0 bg-surface-alt/70 px-4 py-3 font-medium z-10"
-                    >
-                        Unit
-                    </th>
-                    <th
-                        class="sticky top-0 bg-surface-alt/70 px-8 py-3 font-medium z-10"
-                    >
-                        Missing
-                    </th>
+                    <th class="px-8 py-3 font-medium">Variable Name</th>
+                    <th class="px-4 py-3 font-medium">Role</th>
+                    <th class="px-4 py-3 font-medium">Type</th>
+                    <th class="px-4 py-3 font-medium">Description</th>
+                    <th class="px-4 py-3 font-medium">Unit</th>
+                    <th class="px-8 py-3 font-medium">Missing</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-border/40">

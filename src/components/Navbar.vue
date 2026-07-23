@@ -3,20 +3,31 @@ import { ref, onMounted, onUnmounted } from "vue";
 import { lab } from "../data/research";
 import { useTheme } from "../composables/useTheme";
 
+const props = withDefaults(
+    defineProps<{
+        fixed?: boolean;
+    }>(),
+    {
+        fixed: true,
+    },
+);
+
 const { theme, toggleTheme } = useTheme();
-const scrolled = ref(false);
+const scrolled = ref(!props.fixed);
 const menuOpen = ref(false);
 
 const links = [
-    { label: "数据样本", href: "#datasets" },
-    { label: "研究方向", href: "#research" },
-    { label: "论文成果", href: "#publications" },
-    { label: "团队成员", href: "#team" },
-    { label: "招生宣传", href: "#admissions" },
+    { label: "数据样本", to: { path: "/", hash: "#datasets" } },
+    { label: "研究方向", to: { path: "/", hash: "#research" } },
+    { label: "论文成果", to: { path: "/", hash: "#publications" } },
+    { label: "团队成员", to: { path: "/", hash: "#team" } },
+    { label: "招生宣传", to: { path: "/", hash: "#admissions" } },
 ];
 
 function onScroll() {
-    scrolled.value = window.scrollY > 24;
+    if (props.fixed) {
+        scrolled.value = window.scrollY > 24;
+    }
 }
 
 onMounted(() => window.addEventListener("scroll", onScroll));
@@ -29,17 +40,18 @@ function closeMenu() {
 
 <template>
     <header
-        class="fixed top-0 inset-x-0 z-50 transition-all duration-300"
-        :class="
+        class="top-0 inset-x-0 z-50 transition-all duration-300"
+        :class="[
+            fixed ? 'fixed' : '',
             scrolled
                 ? 'bg-bg/80 backdrop-blur-lg border-b border-border/40'
-                : 'bg-transparent'
-        "
+                : 'bg-transparent',
+        ]"
     >
         <nav
             class="relative flex items-center justify-between px-6 md:px-12 lg:px-20 h-20"
         >
-            <a href="#top" class="flex items-center gap-3 group">
+            <router-link to="/" class="flex items-center gap-3 group">
                 <span
                     class="w-9 h-9 rounded-lg flex items-center justify-center"
                 >
@@ -50,18 +62,18 @@ function closeMenu() {
                 >
                     {{ lab.nameZh }}
                 </span>
-            </a>
+            </router-link>
 
             <ul
                 class="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center gap-9"
             >
-                <li v-for="link in links" :key="link.href">
-                    <a
-                        :href="link.href"
+                <li v-for="link in links" :key="link.to.hash">
+                    <router-link
+                        :to="link.to"
                         class="text-sm text-fg-subtle hover:text-fg transition-colors duration-200"
                     >
                         {{ link.label }}
-                    </a>
+                    </router-link>
                 </li>
             </ul>
 
@@ -105,12 +117,12 @@ function closeMenu() {
                     </svg>
                 </button>
 
-                <a
-                    href="#admissions"
+                <router-link
+                    :to="{ path: '/', hash: '#admissions' }"
                     class="inline-flex btn-primary !py-2.5 !px-5 text-sm"
                 >
                     加入我们
-                </a>
+                </router-link>
             </div>
 
             <button
@@ -139,20 +151,20 @@ function closeMenu() {
                 class="lg:hidden bg-bg border-b border-border/40 px-6 pb-6"
             >
                 <ul class="flex flex-col gap-4 pt-2">
-                    <li v-for="link in links" :key="link.href">
-                        <a
-                            :href="link.href"
+                    <li v-for="link in links" :key="link.to.hash">
+                        <router-link
+                            :to="link.to"
                             class="text-fg-muted text-base"
                             @click="closeMenu"
-                            >{{ link.label }}</a
+                            >{{ link.label }}</router-link
                         >
                     </li>
                     <li>
-                        <a
-                            href="#admissions"
+                        <router-link
+                            :to="{ path: '/', hash: '#admissions' }"
                             class="btn-primary w-full justify-center mt-2"
                             @click="closeMenu"
-                            >加入我们</a
+                            >加入我们</router-link
                         >
                     </li>
                     <li>

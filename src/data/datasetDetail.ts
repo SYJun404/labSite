@@ -7,6 +7,14 @@ export interface DatasetVariable {
     missing: boolean;
 }
 
+export interface CitingPaper {
+    title: string;
+    authors: string;
+    publishedIn: string;
+    year?: number;
+    url: string;
+}
+
 export interface DatasetPaper {
     title: string;
     authors: string;
@@ -34,6 +42,7 @@ export interface DatasetDetail {
 
     // 右侧栏
     downloadSizeLabel: string;
+    citingPapers: CitingPaper[];
     citations: number;
     views: number;
     keywords: string[];
@@ -76,6 +85,31 @@ export const datasetDetail: DatasetDetail = {
     features: 27,
 
     downloadSizeLabel: "186 MB",
+    citingPapers: [
+        {
+            title: "A Submodularity-based Agglomerative Clustering Algorithm for the Privacy Funnel",
+            authors: "Ni Ding, Parastoo Sadeghi",
+            publishedIn: "ArXiv",
+            year: 2019,
+            url: "#",
+        },
+        {
+            title: "Graph Neural Networks with Learnable Structural and Positional Representations",
+            authors:
+                "Vijay Prakash Dwivedi, Anh Tuan Luu, Thomas Laurent, Yoshua Bengio, Xavier Bresson",
+            publishedIn: "ICLR",
+            year: 2022,
+            url: "#",
+        },
+        {
+            title: "Pre-training Graph Neural Networks for Molecular Understanding",
+            authors:
+                "Weihua Hu, Bowen Liu, Joseph Gomes, Marinka Zitnik, Percy Liang, Vijay Pande, Jure Leskovec",
+            publishedIn: "NeurIPS",
+            year: 2020,
+            url: "#",
+        },
+    ],
     citations: 47,
     views: 12860,
     keywords: ["molecular-graph", "ai4science", "property-prediction"],
