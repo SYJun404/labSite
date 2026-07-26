@@ -13,7 +13,6 @@ const updateWidth = () => {
 
 onMounted(() => {
     window.addEventListener("resize", () => {
-        console.log(123);
         updateWidth();
     });
 });

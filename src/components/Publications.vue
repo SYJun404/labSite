@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { publications } from "../data/publications";
+import BaseModal from "./shared/BaseModal.vue";
+import PDFViewer from "./pdf/PDFViewer.vue";
+
+const showPdfModal = ref(false);
+const selectedPdfUrl = ref<string | undefined>(undefined);
+const selectedPdfTitle = ref<string | undefined>(undefined);
 
 const activeYear = ref<number | null>(null);
 
@@ -44,6 +50,15 @@ const selectedItems = computed(() => {
     );
     return entry ? entry[1] : [];
 });
+
+const openPdfViewer = (pub: (typeof publications)[number]) => {
+    console.log(pub);
+    if (pub.pdfUrl) {
+        selectedPdfUrl.value = pub.pdfUrl;
+        selectedPdfTitle.value = pub.title + ".pdf";
+        showPdfModal.value = true;
+    }
+};
 </script>
 
 <template>
@@ -139,6 +154,7 @@ const selectedItems = computed(() => {
                             <div class="flex items-center gap-3 flex-wrap">
                                 <h4
                                     class="font-display cursor-pointer group-hover:text-accent-cyan transition-colors duration-300 text-lg text-fg font-medium"
+                                    @click="openPdfViewer(pub)"
                                 >
                                     {{ pub.title }}
                                 </h4>
@@ -179,6 +195,15 @@ const selectedItems = computed(() => {
                 </p>
             </Transition>
         </div>
+
+        <!-- PDF 预览模态框 -->
+        <BaseModal v-model="showPdfModal" title="PDF 预览">
+            <PDFViewer
+                v-if="selectedPdfUrl !== undefined"
+                :url="selectedPdfUrl"
+                :title="selectedPdfTitle"
+            />
+        </BaseModal>
     </section>
 </template>
 

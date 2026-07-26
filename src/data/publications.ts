@@ -5,6 +5,7 @@ export interface Publication {
     authors: string;
     tags: string[];
     highlight: boolean;
+    pdfUrl?: string;
 }
 
 export interface YearStat {
@@ -30,6 +31,7 @@ export const publications: Publication[] = [
         authors: "刘一帆, 赵子墨, 张明远",
         tags: ["具身智能", "世界模型"],
         highlight: true,
+        pdfUrl: "https://arxiv.org/pdf/2607.21390",
     },
     {
         year: 2026,
@@ -38,6 +40,7 @@ export const publications: Publication[] = [
         authors: "孙悦, 陈思颖, 张明远",
         tags: ["大模型对齐"],
         highlight: true,
+        pdfUrl: "https://arxiv.org/pdf/2607.21055",
     },
     {
         year: 2025,
@@ -46,6 +49,7 @@ export const publications: Publication[] = [
         authors: "刘一帆, 黄俊杰, 张明远",
         tags: ["多模态学习"],
         highlight: false,
+        pdfUrl: "https://arxiv.org/pdf/2607.20636",
     },
     {
         year: 2025,

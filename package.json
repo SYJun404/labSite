@@ -10,6 +10,19 @@
         "typecheck": "vue-tsc --noEmit"
     },
     "dependencies": {
+        "@embedpdf/core": "^2.14.4",
+        "@embedpdf/engines": "^2.14.4",
+        "@embedpdf/plugin-document-manager": "^2.14.4",
+        "@embedpdf/plugin-export": "^2.14.4",
+        "@embedpdf/plugin-interaction-manager": "^2.14.4",
+        "@embedpdf/plugin-render": "^2.14.4",
+        "@embedpdf/plugin-scroll": "^2.14.4",
+        "@embedpdf/plugin-spread": "^2.14.4",
+        "@embedpdf/plugin-thumbnail": "^2.14.4",
+        "@embedpdf/plugin-tiling": "^2.14.4",
+        "@embedpdf/plugin-viewport": "^2.14.4",
+        "@embedpdf/plugin-zoom": "^2.14.4",
+        "@lucide/vue": "^1.26.0",
         "chart.js": "^4.4.2",
         "vue": "^3.4.21",
         "vue-router": "^4.6.4"
