@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { DatasetDetail } from "../../data/datasetDetail";
-import { Download, TextQuote } from "@lucide/vue";
+import { Download, TextQuote, User, Rss } from "@lucide/vue";
 
 defineProps<{
     d: DatasetDetail;
@@ -44,22 +44,9 @@ defineProps<{
                 <li
                     v-for="c in d.creators"
                     :key="c"
-                    class="flex items-center gap-2.5 text-sm text-fg"
+                    class="flex items-center gap-1 text-sm text-fg"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        class="w-4 h-4 text-fg-faint shrink-0"
-                    >
-                        <circle cx="12" cy="8" r="3.2" />
-                        <path
-                            stroke-linecap="round"
-                            d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"
-                        />
-                    </svg>
+                    <User class="text-fg-faint" :size="14" />
                     {{ c }}
                 </li>
             </ul>
@@ -91,21 +78,7 @@ defineProps<{
                         <p
                             class="text-xs text-fg-faint mt-0.5 flex items-center gap-1"
                         >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                class="w-3 h-3"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M12 6v6l4 2"
-                                />
-                                <circle cx="12" cy="12" r="8" />
-                            </svg>
+                            <Rss :size="12" />
                             Published in {{ p.publishedIn }}
                         </p>
                     </a>

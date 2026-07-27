@@ -13,7 +13,7 @@ import { MousePointerClick } from "@lucide/vue";
         ></div>
 
         <div class="relative z-10 w-full section-pad !py-0">
-            <div class="max-w-4xl">
+            <div class="max-w-7xl">
                 <p class="eyebrow mb-6">
                     {{ lab.university }} · {{ lab.affiliation }}
                 </p>
@@ -28,7 +28,7 @@ import { MousePointerClick } from "@lucide/vue";
                     {{ lab.taglineEn }}
                 </p>
                 <p
-                    class="mt-8 text-lg text-fg-subtle max-w-2xl leading-relaxed"
+                    class="mt-8 text-lg text-fg-subtle max-w-4xl leading-relaxed"
                 >
                     {{ lab.description }}
                 </p>

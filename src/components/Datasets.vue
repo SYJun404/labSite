@@ -4,6 +4,13 @@ import { datasets, type DatasetSample } from "../data/datasets";
 import DatasetDrawer from "./datasets/drawer.vue";
 import HotSvg from "./datasets/hotSvg.vue";
 import NewSvg from "./datasets/newSvg.vue";
+import {
+    Flame,
+    Grid2x2Plus,
+    ListSortDescending,
+    Grid2x2,
+    Astroid,
+} from "@lucide/vue";
 
 const totalDatasets = computed(() => datasets.length);
 
@@ -103,12 +110,12 @@ const navigateToDataset = (id: string) => {
                 <div
                     class="px-6 flex gap-2 items-center py-5 border-b border-border/60"
                 >
-                    <HotSvg
+                    <Flame
                         v-if="section.title === '热门数据集'"
                         :size="20"
-                        color="#0A0B0F"
+                        class="text-fg"
                     />
-                    <NewSvg v-else :size="20" color="#0A0B0F" />
+                    <Grid2x2Plus v-else :size="20" class="text-fg" />
                     <h3 class="font-display text-lg text-fg font-semibold">
                         {{ section.title }}
                     </h3>
@@ -141,66 +148,22 @@ const navigateToDataset = (id: string) => {
                             </p>
                             <div class="flex items-center gap-x-8 gap-y-2 mt-3">
                                 <span
-                                    class="flex flex-1 items-center font-mono text-xs text-fg-faint"
+                                    class="flex flex-1 gap-1 items-center font-mono text-xs text-fg-faint"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                        class="w-3.5 h-3.5"
-                                    >
-                                        <circle cx="11" cy="11" r="7" />
-                                        <path
-                                            stroke-linecap="round"
-                                            d="M20 20l-3.5-3.5"
-                                        />
-                                    </svg>
+                                    <ListSortDescending :size="12" />
                                     {{ d.taskTypes.join(", ") }}
                                 </span>
                                 <span
-                                    class="flex flex-1 items-center font-mono text-xs text-fg-faint"
+                                    class="flex flex-1 gap-1 items-center font-mono text-xs text-fg-faint"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                        class="w-3.5 h-3.5"
-                                    >
-                                        <rect
-                                            x="3.5"
-                                            y="3.5"
-                                            width="17"
-                                            height="17"
-                                            rx="2"
-                                        />
-                                        <path
-                                            stroke-linecap="round"
-                                            d="M3.5 9.5h17M9.5 3.5v17"
-                                        />
-                                    </svg>
-                                    {{ d.instances }} Instances
+                                    <Grid2x2 :size="12" />
+                                    {{ d.instances }}&thinsp;Instances
                                 </span>
                                 <span
-                                    class="flex flex-1 items-center font-mono text-xs text-fg-faint"
+                                    class="flex flex-1 gap-1 items-center font-mono text-xs text-fg-faint"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                        class="w-3.5 h-3.5"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            d="M4 6h16M4 12h16M4 18h9"
-                                        />
-                                    </svg>
-                                    {{ d.features }} Features
+                                    <Astroid :size="12" />
+                                    {{ d.features }}&thinsp;Features
                                 </span>
                             </div>
                         </div>
