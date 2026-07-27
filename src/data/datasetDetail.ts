@@ -84,7 +84,7 @@ export const datasetDetail: DatasetDetail = {
     instances: 54700,
     features: 27,
 
-    downloadSizeLabel: "186 MB",
+    downloadSizeLabel: "186MB",
     citingPapers: [
         {
             title: "A Submodularity-based Agglomerative Clustering Algorithm for the Privacy Funnel",

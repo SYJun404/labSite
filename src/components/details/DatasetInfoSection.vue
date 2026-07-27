@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type { DatasetDetail } from "../../data/datasetDetail";
+import { Plus, Minus } from "@lucide/vue";
 
 defineProps<{
     d: DatasetDetail;
@@ -19,36 +20,8 @@ const isOpen = ref(true);
                 @click="isOpen = !isOpen"
                 class="text-fg-faint hover:text-fg cursor-pointer"
             >
-                <svg
-                    v-if="isOpen"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    class="w-5 h-5"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M5 12h14"
-                    />
-                </svg>
-                <svg
-                    v-else
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    class="w-5 h-5"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 5v14m-7-7h14"
-                    />
-                </svg>
+                <Plus v-if="!isOpen" :size="18" />
+                <Minus v-else :size="18" />
             </span>
         </div>
         <div

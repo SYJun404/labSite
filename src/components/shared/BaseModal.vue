@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
+import { Minimize } from "@lucide/vue";
 
 const props = withDefaults(
     defineProps<{
@@ -56,7 +57,7 @@ function close() {
                     <div
                         class="flex items-center justify-between px-6 py-4 border-b border-border/60 shrink-0"
                     >
-                        <!-- 左侧标题区（可通过 header slot 自定义） -->
+                        <!-- 左侧标题区 -->
                         <slot name="header">
                             <div>
                                 <h2
@@ -73,23 +74,10 @@ function close() {
                             </div>
                         </slot>
                         <button
-                            class="text-fg-faint hover:text-fg transition-colors duration-200 p-1"
+                            class="text-fg-faint hover:text-fg transition-colors duration-200"
                             @click="close"
                         >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                class="w-5 h-5"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M18 6L6 18M6 6l12 12"
-                                />
-                            </svg>
+                            <Minimize :size="18" />
                         </button>
                     </div>
 

@@ -15,9 +15,9 @@ import Datasets from "../components/Datasets.vue";
         <Navbar />
         <main>
             <Hero />
+            <Publications />
             <Datasets />
             <Research />
-            <Publications />
             <Team />
             <Admissions />
             <News />

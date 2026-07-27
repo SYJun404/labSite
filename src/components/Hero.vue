@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { lab } from "../data/research";
+import { MousePointerClick } from "@lucide/vue";
 </script>
 
 <template>
@@ -33,9 +34,11 @@ import { lab } from "../data/research";
                 </p>
 
                 <div class="mt-10 flex flex-wrap gap-4">
-                    <a href="#datasets" class="btn-primary">
-                        查看数据样本
-                        <span aria-hidden="true">→</span>
+                    <a href="#publications" class="btn-primary">
+                        探索论文成果
+                        <span aria-hidden="true">
+                            <MousePointerClick :size="20" />
+                        </span>
                     </a>
                     <a href="#admissions" class="btn-ghost">加入实验室</a>
                 </div>

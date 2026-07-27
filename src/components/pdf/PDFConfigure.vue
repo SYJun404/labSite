@@ -72,7 +72,7 @@ const handleSpreadMode = () => {
     <div class="flex h-full flex-col overflow-hidden">
         <!-- Navigation Toolbar -->
         <div
-            class="flex justify-center border-b border-border/60 bg-gray-100 px-6 py-3.5 dark:border-gray-700 dark:bg-gray-800"
+            class="flex justify-center border-b border-border/60 bg-surface px-6 py-3.5 dark:border-gray-700 dark:bg-gray-800"
         >
             <!-- useZoom -->
             <div class="flex-1 flex justify-start gap-2">
@@ -137,7 +137,7 @@ const handleSpreadMode = () => {
                         <button
                             @click="showThumbnails = !showThumbnails"
                             :class="[
-                                'inline-flex items-center w-8 h-8 justify-center rounded-md shadow-sm transition-all',
+                                'inline-flex items-center w-8 h-8 justify-center rounded-md shadow-sm transition-all active:scale-95',
                                 showThumbnails
                                     ? 'bg-accent-blue text-white ring-1 ring-accent-blue/50'
                                     : 'bg-bg text-gray-600 ring-1 ring-gray-300 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:ring-gray-600 dark:hover:bg-gray-600 dark:hover:text-gray-100',
@@ -155,7 +155,7 @@ const handleSpreadMode = () => {
                         <button
                             @click="handleSpreadMode"
                             :class="[
-                                'inline-flex items-center w-8 h-8 justify-center rounded-md shadow-sm transition-all',
+                                'inline-flex items-center w-8 h-8 justify-center rounded-md shadow-sm transition-all active:scale-95',
                                 spreadMode === SpreadMode.Odd
                                     ? 'bg-accent-blue text-white ring-1 ring-accent-blue/50'
                                     : 'bg-bg text-gray-600 ring-1 ring-gray-300 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:ring-gray-600 dark:hover:bg-gray-600 dark:hover:text-gray-100',
@@ -279,7 +279,7 @@ input::-webkit-inner-spin-button {
 }
 
 input[type="number"] {
-    -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 /* Hide scrollbar in the thumbnails pane while keeping scroll functionality */

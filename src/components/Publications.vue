@@ -19,12 +19,10 @@ const grouped: any = computed(() => {
     return Object.entries(map).sort((a: any, b: any) => b[0] - a[0]);
 });
 
-/** All years from filtered data, sorted descending */
 const years = computed(() => {
     return grouped.value.map(([year]: any) => Number(year));
 });
 
-/** Reset active year when filtered data changes */
 watch(
     grouped,
     () => {
@@ -42,7 +40,6 @@ watch(
     { immediate: true },
 );
 
-/** Only the active year's publications */
 const selectedItems = computed(() => {
     if (!activeYear.value) return [];
     const entry = grouped.value.find(
@@ -52,10 +49,11 @@ const selectedItems = computed(() => {
 });
 
 const openPdfViewer = (pub: (typeof publications)[number]) => {
-    console.log(pub);
     if (pub.pdfUrl) {
         selectedPdfUrl.value = pub.pdfUrl;
-        selectedPdfTitle.value = pub.title + ".pdf";
+        // 文章作者拼接，最多三个人
+        const authors = pub.authors.split(",").slice(0, 3).join(", ");
+        selectedPdfTitle.value = `${pub.title} - ${authors}.pdf`;
         showPdfModal.value = true;
     }
 };
@@ -82,7 +80,7 @@ const openPdfViewer = (pub: (typeof publications)[number]) => {
                     <div class="relative overflow-hidden">
                         <!-- Horizontal guide line -->
                         <div
-                            class="absolute inset-x-0 top-[10px] h-px bg-border"
+                            class="absolute inset-x-0 top-[8px] h-px bg-border"
                         ></div>
 
                         <div class="relative flex justify-between items-start">
@@ -94,7 +92,7 @@ const openPdfViewer = (pub: (typeof publications)[number]) => {
                             >
                                 <!-- Dot -->
                                 <div
-                                    class="relative z-10 w-[20px] h-[20px] rounded-full border-2 flex items-center justify-center transition-all duration-300"
+                                    class="relative z-10 w-[16px] h-[16px] rounded-full border-2 flex items-center justify-center transition-all duration-300"
                                     :class="
                                         activeYear === year
                                             ? 'bg-accent-cyan border-accent-cyan shadow-[0_0_18px_rgba(61,217,196,0.4)]'
@@ -103,7 +101,7 @@ const openPdfViewer = (pub: (typeof publications)[number]) => {
                                 >
                                     <div
                                         v-if="activeYear === year"
-                                        class="w-[8px] h-[8px] rounded-full bg-bg"
+                                        class="w-[6px] h-[6px] rounded-full bg-bg"
                                     ></div>
                                 </div>
 
@@ -134,8 +132,8 @@ const openPdfViewer = (pub: (typeof publications)[number]) => {
                 >
                     {{ activeYear }}
                 </h3>
-                <span class="font-mono text-sm text-fg-faint">
-                    {{ selectedItems.length }}篇论文
+                <span class="font-display text-sm text-fg-faint">
+                    {{ selectedItems.length }}&thinsp;篇论文
                 </span>
             </div>
 

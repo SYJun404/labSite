@@ -24,11 +24,12 @@ const props = defineProps<{
 }>();
 
 const { engine, isLoading } = usePdfiumEngine();
-console.log(props.title);
 
 const plugins = computed(() => [
     createPluginRegistration(DocumentManagerPluginPackage, {
-        initialDocuments: [{ url: props.url }],
+        initialDocuments: [
+            { url: props.url, name: props.title || "document.pdf" },
+        ],
     }),
     createPluginRegistration(ViewportPluginPackage),
     createPluginRegistration(ScrollPluginPackage),
@@ -45,9 +46,7 @@ const plugins = computed(() => [
         width: 120,
         paddingY: 5,
     }),
-    createPluginRegistration(ExportPluginPackage, {
-        defaultFileName: "document.pdf",
-    }),
+    createPluginRegistration(ExportPluginPackage),
 ]);
 </script>
 

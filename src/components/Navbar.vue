@@ -17,9 +17,9 @@ const scrolled = ref(!props.fixed);
 const menuOpen = ref(false);
 
 const links = [
+    { label: "论文成果", to: { path: "/", hash: "#publications" } },
     { label: "数据样本", to: { path: "/", hash: "#datasets" } },
     { label: "研究方向", to: { path: "/", hash: "#research" } },
-    { label: "论文成果", to: { path: "/", hash: "#publications" } },
     { label: "团队成员", to: { path: "/", hash: "#team" } },
     { label: "招生宣传", to: { path: "/", hash: "#admissions" } },
 ];

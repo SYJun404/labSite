@@ -19,9 +19,15 @@ defineProps<{
             <h1 class="font-display text-3xl md:text-4xl font-semibold text-fg">
                 {{ d.name }}
             </h1>
-            <p class="font-mono text-sm text-fg-subtle mt-1">
-                发布于 {{ d.donatedDate }}
-            </p>
+            <div class="flex mt-1">
+                <p class="font-mono text-sm text-fg-subtle">
+                    Date: {{ d.donatedDate }}
+                </p>
+                <p class="font-mono px-3 text-sm text-fg-subtle">|</p>
+                <p class="font-mono text-sm text-fg-subtle">
+                    Size: {{ d.downloadSizeLabel }}
+                </p>
+            </div>
         </div>
     </div>
 </template>

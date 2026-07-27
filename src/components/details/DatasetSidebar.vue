@@ -1,39 +1,23 @@
 <script setup lang="ts">
 import type { DatasetDetail } from "../../data/datasetDetail";
+import { Download, TextQuote } from "@lucide/vue";
 
 defineProps<{
     d: DatasetDetail;
 }>();
-
-function formatNumber(n: number): string {
-    return n.toLocaleString("en-US");
-}
 </script>
 
 <template>
     <aside class="space-y-4">
         <button class="btn-primary w-full justify-center">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                class="w-4 h-4"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"
-                />
-            </svg>
+            <Download :size="18" />
             下载数据集
-            <span class="opacity-70">({{ d.downloadSizeLabel }})</span>
         </button>
 
         <button
-            class="w-full inline-flex items-center justify-center gap-2 bg-accent-cyan text-white font-semibold px-6 py-3 rounded-full hover:opacity-90 transition-opacity duration-300"
+            class="w-full inline-flex items-center justify-center gap-2 btn-secondary"
         >
+            <TextQuote :size="18" />
             引用数据集
         </button>
 

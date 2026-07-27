@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import type { DatasetDetail } from "../../data/datasetDetail";
 import BaseModal from "../shared/BaseModal.vue";
+import { Maximize } from "@lucide/vue";
 
 defineProps<{
     d: DatasetDetail;
@@ -23,20 +24,7 @@ const showModal = ref(false);
                     title="全屏查看"
                     @click.stop="showModal = true"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        class="w-4 h-4"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"
-                        />
-                    </svg>
+                    <Maximize :size="18" />
                 </button>
             </span>
         </div>
