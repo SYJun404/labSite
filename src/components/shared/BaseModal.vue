@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, onMounted, onUnmounted } from "vue";
 import { Minimize } from "@lucide/vue";
 
 const props = withDefaults(
     defineProps<{
         modelValue: boolean;
-        /** Modal title (rendered in header slot fallback) */
         title?: string;
-        /** Subtitle text below the title (rendered in header slot fallback) */
         subtitle?: string;
+        width?: number;
+        height?: number;
     }>(),
     {
         title: "",
         subtitle: "",
+        height: 85,
     },
 );
 
@@ -40,6 +41,20 @@ watch(visible, (val) => {
 function close() {
     visible.value = false;
 }
+
+function onKeydown(e: KeyboardEvent) {
+    if (e.key === "Escape" && visible.value) {
+        close();
+    }
+}
+
+onMounted(() => {
+    document.addEventListener("keydown", onKeydown);
+});
+
+onUnmounted(() => {
+    document.removeEventListener("keydown", onKeydown);
+});
 </script>
 
 <template>
@@ -51,7 +66,18 @@ function close() {
                 @click.self="close"
             >
                 <div
-                    class="relative w-full mx-[4.7rem] h-[85vh] card hover:border-border/60 flex flex-col overflow-hidden"
+                    class="relative w-full mx-6 md:mx-12 lg:mx-20 card hover:border-border/60 flex flex-col overflow-hidden"
+                    :style="{
+                        height: height + 'vh',
+                        ...(width != null
+                            ? {
+                                  width: width + 'vw',
+                                  marginLeft: 0,
+                                  marginRight: 0,
+                              }
+                            : {}),
+                        ...(width === 100 ? { borderRadius: '0' } : {}),
+                    }"
                 >
                     <!-- 模态框头部 -->
                     <div
@@ -61,13 +87,13 @@ function close() {
                         <slot name="header">
                             <div>
                                 <h2
-                                    class="font-display text-lg text-fg font-semibold"
+                                    class="font-display text-lg text-fg font-semibold line-clamp-1 pr-6"
                                 >
                                     {{ title }}
                                 </h2>
                                 <p
                                     v-if="subtitle"
-                                    class="font-mono text-xs text-fg-faint mt-0.5"
+                                    class="font-mono text-xs text-fg-faint mt-0.5 line-clamp-1 pr-6"
                                 >
                                     {{ subtitle }}
                                 </p>

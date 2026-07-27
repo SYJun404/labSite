@@ -195,7 +195,16 @@ const openPdfViewer = (pub: (typeof publications)[number]) => {
         </div>
 
         <!-- PDF 预览模态框 -->
-        <BaseModal v-model="showPdfModal" title="PDF 预览">
+        <BaseModal
+            v-model="showPdfModal"
+            :width="100"
+            :height="100"
+            :title="
+                selectedPdfTitle
+                    ? selectedPdfTitle.replace('.pdf', '')
+                    : 'PDF 预览'
+            "
+        >
             <PDFViewer
                 v-if="selectedPdfUrl !== undefined"
                 :url="selectedPdfUrl"
