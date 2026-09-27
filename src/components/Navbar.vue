@@ -67,11 +67,12 @@ function closeMenu() {
             <ul
                 class="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center gap-9"
             >
-                <li v-for="link in links" :key="link.to.hash">
-                    <router-link
-                        :to="link.to"
-                        class="text-sm text-fg-subtle hover:text-fg transition-colors duration-200"
-                    >
+                <li
+                    class="text-sm text-fg-subtle hover:text-fg transition-all active:scale-95 duration-200"
+                    v-for="link in links"
+                    :key="link.to.hash"
+                >
+                    <router-link :to="link.to">
                         {{ link.label }}
                     </router-link>
                 </li>
