@@ -8,7 +8,6 @@ defineProps<{
     d: DatasetDetail;
 }>();
 
-const isOpen = ref(true);
 const showModal = ref(false);
 </script>
 
@@ -28,7 +27,7 @@ const showModal = ref(false);
                 </button>
             </span>
         </div>
-        <div v-show="isOpen" class="border-t border-border/60 overflow-x-auto">
+        <div class="border-t border-border/60 overflow-x-auto">
             <table class="w-full text-sm min-w-[640px]">
                 <thead>
                     <tr
