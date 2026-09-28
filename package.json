@@ -10,6 +10,13 @@
         "typecheck": "vue-tsc --noEmit"
     },
     "dependencies": {
+        "codemirror": "^6.0.1",
+        "@codemirror/state": "^6.4.0",
+        "@codemirror/view": "^6.26.0",
+        "@codemirror/language": "^6.10.0",
+        "@codemirror/lang-json": "^6.0.1",
+        "@codemirror/lint": "^6.5.0",
+        "@lezer/highlight": "^1.2.0",
         "@embedpdf/core": "^2.14.4",
         "@embedpdf/engines": "^2.14.4",
         "@embedpdf/plugin-document-manager": "^2.14.4",
