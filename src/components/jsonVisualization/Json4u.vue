@@ -70,6 +70,7 @@ const activePath = ref<string | null>(null); // 当前选中的 JSON 路径（�
 const animating = ref(false);
 const showEditorRef = ref(props.showEditor ?? false);
 
+let pathLen = 0;
 let fitPending = true;
 let timer: ReturnType<typeof setTimeout> | undefined;
 
@@ -192,6 +193,7 @@ function initialCollapsed(value: unknown): Set<string> {
     const limit = props.autoCollapseThreshold;
     if (!limit || limit <= 0) return new Set();
     const paths = collectContainerPaths(value);
+    pathLen = paths.length;
     if (paths.length > limit) {
         showEditorRef.value = false;
     }
@@ -333,7 +335,9 @@ watch(showModal, (open) => {
         nextTick(fit);
         return;
     }
-    showEditorRef.value = false;
+    if (pathLen > props.autoCollapseThreshold) {
+        showEditorRef.value = false;
+    }
     if (!savedState) return;
     tf.value = savedState.tf;
     collapsed.value = savedState.collapsed;
