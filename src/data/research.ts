@@ -22,16 +22,16 @@ export interface ResearchArea {
 }
 
 export const lab: LabInfo = {
-    nameZh: "智能感知与学习实验室",
-    nameEn: "Intelligent Perception & Learning Lab",
-    shortName: "IPLL",
+    nameZh: "多模态智能舆情计算实验室",
+    nameEn: "Multimodal Intelligent Public Opinion Computing Lab",
+    shortName: "MIPOC Lab",
     affiliation: "人工智能学院",
     university: "重庆邮电大学",
-    tagline: "探索感知、推理与决策的统一计算原理",
+    tagline: "感知舆情 · 理解社会 · 智能决策",
     taglineEn:
-        "Toward a unified computational account of perception, reasoning and action.",
+        "Sensing public opinion, understanding society, enabling intelligent decisions.",
     description:
-        "实验室成立于 2016 年，隶属计算机科学与技术学院，专注于多模态学习、具身智能、大模型对齐与可信机器学习等方向的基础研究与系统落地，与多家国家重点实验室及企业研究院保持长期合作。",
+        "实验室成立于 2016 年，隶属人工智能学院，聚焦智能舆情计算与社会媒体智能，主要研究多模态舆情感知、情感与观点分析、热点事件理解、舆情传播与演化建模以及大语言模型驱动的社会信息分析等问题，致力于构建从舆情感知、语义理解到趋势研判的智能计算方法与系统。",
     email: "contact@lab.edu.cn",
     address: "重庆邮电大学 · 信息科技大楼 1201",
     github: "https://github.com/ipll-lab",
