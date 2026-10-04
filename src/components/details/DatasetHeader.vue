@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DatasetDetail } from "../../data/datasetDetail";
+import type { DatasetDetail } from "../../api/dataset";
 
 defineProps<{
     d: DatasetDetail;
@@ -12,20 +12,20 @@ defineProps<{
             class="w-20 h-20 shrink-0 rounded-2xl bg-signal-gradient flex items-center justify-center"
         >
             <span class="font-display text-2xl font-semibold text-[#0A0B0F]">{{
-                d.tag
+                d.overview?.tag
             }}</span>
         </div>
         <div>
             <h1 class="font-display text-3xl md:text-4xl font-semibold text-fg">
-                {{ d.name }}
+                {{ d.overview?.name }}
             </h1>
             <div class="flex mt-1">
                 <p class="font-mono text-sm text-fg-subtle">
-                    Date: {{ d.donatedDate }}
+                    Date: {{ d.overview?.donatedDate }}
                 </p>
                 <p class="font-mono px-3 text-sm text-fg-subtle">|</p>
                 <p class="font-mono text-sm text-fg-subtle">
-                    Size: {{ d.downloadSizeLabel }}
+                    Size: {{ d.overview?.downloadSize }}
                 </p>
             </div>
         </div>

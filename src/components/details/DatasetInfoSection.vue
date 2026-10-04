@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import type { DatasetDetail } from "../../data/datasetDetail";
+import type { DatasetDetail } from "../../api/dataset";
 import { Plus, Minus } from "@lucide/vue";
 
 defineProps<{
@@ -28,26 +28,12 @@ const isOpen = ref(true);
             v-show="isOpen"
             class="px-8 pb-8 pt-2 space-y-6 border-t border-border/60"
         >
-            <div>
-                <p class="text-fg font-medium text-sm mb-1.5">
-                    这个数据集中的每条样本代表什么？
+            <div v-for="(item, i) in d.intro ?? []" :key="i">
+                <p v-if="item.title" class="text-fg font-medium text-sm mb-1.5">
+                    {{ item.title }}
                 </p>
                 <p class="text-fg-subtle text-sm leading-relaxed">
-                    {{ d.whatInstancesRepresent }}
-                </p>
-            </div>
-            <div>
-                <p class="text-fg font-medium text-sm mb-1.5">补充说明</p>
-                <p class="text-fg-subtle text-sm leading-relaxed">
-                    {{ d.additionalInfo }}
-                </p>
-            </div>
-            <div>
-                <p class="text-fg font-medium text-sm mb-1.5">
-                    是否存在缺失值？
-                </p>
-                <p class="text-fg-subtle text-sm">
-                    {{ d.hasMissingValues ? "是" : "否" }}
+                    {{ item.content }}
                 </p>
             </div>
         </div>

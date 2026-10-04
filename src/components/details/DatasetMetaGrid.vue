@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { DatasetDetail } from "../../data/datasetDetail";
+import type { DatasetDetail } from "../../api/dataset";
 
-const props = defineProps<{
+defineProps<{
     d: DatasetDetail;
 }>();
 
@@ -13,7 +13,7 @@ function formatNumber(n: number): string {
 <template>
     <div class="p-8 space-y-6">
         <p class="text-fg-muted leading-relaxed">
-            {{ d.description }}
+            {{ d.overview?.description }}
         </p>
 
         <div class="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-6">
@@ -21,10 +21,10 @@ function formatNumber(n: number): string {
                 <p
                     class="font-mono text-xs uppercase tracking-wide eyebrow mb-1.5"
                 >
-                    Dataset Characteristics
+                    Characteristics
                 </p>
                 <p class="text-fg text-sm">
-                    {{ d.characteristics }}
+                    {{ d.overview?.characteristics }}
                 </p>
             </div>
             <div>
@@ -33,7 +33,7 @@ function formatNumber(n: number): string {
                 >
                     Subject Area
                 </p>
-                <p class="text-fg text-sm">{{ d.subjectArea }}</p>
+                <p class="text-fg text-sm">{{ d.overview?.subjectArea }}</p>
             </div>
             <div>
                 <p
@@ -42,7 +42,7 @@ function formatNumber(n: number): string {
                     Associated Tasks
                 </p>
                 <p class="text-fg text-sm">
-                    {{ d.associatedTasks.join(", ") }}
+                    {{ d.overview?.tasks }}
                 </p>
             </div>
             <div>
@@ -51,7 +51,7 @@ function formatNumber(n: number): string {
                 >
                     Feature Type
                 </p>
-                <p class="text-fg text-sm">{{ d.featureType }}</p>
+                <p class="text-fg text-sm">{{ d.overview?.featureType }}</p>
             </div>
             <div>
                 <p
@@ -60,7 +60,7 @@ function formatNumber(n: number): string {
                     <span class="mr-0.5">#</span>Instances
                 </p>
                 <p class="text-fg text-sm">
-                    {{ formatNumber(d.instances) }}
+                    {{ formatNumber(d.overview?.instances ?? 0) }}
                 </p>
             </div>
             <div>
@@ -69,7 +69,7 @@ function formatNumber(n: number): string {
                 >
                     <span class="mr-0.5">#</span>Features
                 </p>
-                <p class="text-fg text-sm">{{ d.features }}</p>
+                <p class="text-fg text-sm">{{ d.overview?.features }}</p>
             </div>
         </div>
     </div>

@@ -1,10 +1,21 @@
 <script setup lang="ts">
-import type { DatasetDetail } from "../../data/datasetDetail";
+import { computed } from "vue";
+import type { DatasetDetail } from "../../api/dataset";
 import { Download, TextQuote, User, Rss } from "@lucide/vue";
 
-defineProps<{
+const props = defineProps<{
     d: DatasetDetail;
 }>();
+
+const creators = computed(() => [
+    ...new Set(
+        (props.d.creators ?? [])
+            .map((c) => c.name || c.contact || "")
+            .filter(Boolean),
+    ),
+]);
+
+const license = computed(() => props.d.license?.[0]);
 </script>
 
 <template>
@@ -42,7 +53,7 @@ defineProps<{
             </p>
             <ul class="space-y-2.5">
                 <li
-                    v-for="c in d.creators"
+                    v-for="c in creators"
                     :key="c"
                     class="flex items-center gap-1 text-sm text-fg"
                 >
@@ -59,9 +70,9 @@ defineProps<{
                 reference
             </p>
             <ul class="space-y-4">
-                <li v-for="p in d.citingPapers" :key="p.title" class="group">
+                <li v-for="(p, i) in d.reference ?? []" :key="i" class="group">
                     <a
-                        :href="p.url"
+                        :href="p.url || '#'"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="block -mx-2 px-2 py-2 cursor-default"
@@ -93,12 +104,13 @@ defineProps<{
                 License
             </p>
             <p class="text-xs text-fg-subtle leading-relaxed">
-                This dataset is licensed under a
-                {{ d.licenseName }}
-                license.
+                {{ license?.title }}
             </p>
-            <p class="text-xs text-fg-faint leading-relaxed mt-3">
-                {{ d.licenseDescription }}
+            <p
+                v-if="license?.description"
+                class="text-xs text-fg-faint leading-relaxed mt-3"
+            >
+                {{ license.description }}
             </p>
         </div>
     </aside>

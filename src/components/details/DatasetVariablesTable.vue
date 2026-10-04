@@ -1,14 +1,27 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import type { DatasetDetail } from "../../data/datasetDetail";
+import { computed, ref } from "vue";
+import type { DatasetDetail } from "../../api/dataset";
 import BaseModal from "../shared/BaseModal.vue";
 import { Maximize } from "@lucide/vue";
 
-defineProps<{
+const props = defineProps<{
     d: DatasetDetail;
 }>();
 
 const showModal = ref(false);
+
+// fieldExplain.columns 是有序的列定义，数组顺序即列顺序
+const columnDefs = computed(() => props.d.fieldExplain?.columns ?? []);
+
+const rows = computed(() => {
+    const data = props.d.fieldExplain?.data ?? [];
+    return data.map((entry) =>
+        columnDefs.value.map((col) => {
+            const value = entry[col.id];
+            return value === undefined || value === "" ? "—" : String(value);
+        }),
+    );
+});
 </script>
 
 <template>
@@ -33,35 +46,29 @@ const showModal = ref(false);
                     <tr
                         class="text-left font-mono text-xs uppercase tracking-wide text-fg-faint"
                     >
-                        <th class="px-8 py-3 font-medium">Variable Name</th>
-                        <th class="px-4 py-3 font-medium">Role</th>
-                        <th class="px-4 py-3 font-medium">Type</th>
-                        <th class="px-4 py-3 font-medium">Description</th>
-                        <th class="px-4 py-3 font-medium">Unit</th>
-                        <th class="px-8 py-3 font-medium">Missing</th>
+                        <th
+                            v-for="(col, colIdx) in columnDefs"
+                            :key="col.id"
+                            class="py-3 font-medium"
+                            :class="colIdx === 0 ? 'px-8' : 'px-4'"
+                        >
+                            {{ col.name }}
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-border/40">
-                    <tr v-for="v in d.variables" :key="v.name">
+                    <tr v-for="(row, rowIdx) in rows" :key="rowIdx">
                         <td
-                            class="px-8 py-3 font-mono text-fg whitespace-nowrap"
+                            v-for="(cell, cellIdx) in row"
+                            :key="cellIdx"
+                            class="py-3 whitespace-nowrap"
+                            :class="
+                                cellIdx === 0
+                                    ? 'px-8 font-mono text-fg'
+                                    : 'px-4 text-fg-subtle'
+                            "
                         >
-                            {{ v.name }}
-                        </td>
-                        <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
-                            {{ v.role }}
-                        </td>
-                        <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
-                            {{ v.type }}
-                        </td>
-                        <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
-                            {{ v.description || "—" }}
-                        </td>
-                        <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
-                            {{ v.unit || "—" }}
-                        </td>
-                        <td class="px-8 py-3 text-fg-subtle whitespace-nowrap">
-                            {{ v.missing ? "yes" : "no" }}
+                            {{ cell }}
                         </td>
                     </tr>
                 </tbody>
@@ -76,33 +83,29 @@ const showModal = ref(false);
                 <tr
                     class="text-left font-mono text-xs uppercase tracking-wide text-fg-faint"
                 >
-                    <th class="px-8 py-3 font-medium">Variable Name</th>
-                    <th class="px-4 py-3 font-medium">Role</th>
-                    <th class="px-4 py-3 font-medium">Type</th>
-                    <th class="px-4 py-3 font-medium">Description</th>
-                    <th class="px-4 py-3 font-medium">Unit</th>
-                    <th class="px-8 py-3 font-medium">Missing</th>
+                    <th
+                        v-for="(col, colIdx) in columnDefs"
+                        :key="col.id"
+                        class="py-3 font-medium"
+                        :class="colIdx === 0 ? 'px-8' : 'px-4'"
+                    >
+                        {{ col.name }}
+                    </th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-border/40">
-                <tr v-for="v in d.variables" :key="v.name">
-                    <td class="px-8 py-3 font-mono text-fg whitespace-nowrap">
-                        {{ v.name }}
-                    </td>
-                    <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
-                        {{ v.role }}
-                    </td>
-                    <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
-                        {{ v.type }}
-                    </td>
-                    <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
-                        {{ v.description || "—" }}
-                    </td>
-                    <td class="px-4 py-3 text-fg-subtle whitespace-nowrap">
-                        {{ v.unit || "—" }}
-                    </td>
-                    <td class="px-8 py-3 text-fg-subtle whitespace-nowrap">
-                        {{ v.missing ? "yes" : "no" }}
+                <tr v-for="(row, rowIdx) in rows" :key="rowIdx">
+                    <td
+                        v-for="(cell, cellIdx) in row"
+                        :key="cellIdx"
+                        class="py-3 whitespace-nowrap"
+                        :class="
+                            cellIdx === 0
+                                ? 'px-8 font-mono text-fg'
+                                : 'px-4 text-fg-subtle'
+                        "
+                    >
+                        {{ cell }}
                     </td>
                 </tr>
             </tbody>
