@@ -73,6 +73,12 @@ export interface Dataset {
     updateTime?: string;
 }
 
+// 首页热门 / 最新数据集，对应后端接口 /web/dataset/hot-and-new
+export interface HotAndNewDatasets {
+    hottest?: Dataset[];
+    latest?: Dataset[];
+}
+
 // 数据集完整详情（概览 + 详情），对应后端 DatasetDetailVO
 export interface DatasetDetail {
     overview?: Dataset;
@@ -92,6 +98,14 @@ export const datasetApi = {
     getByDatasetId(datasetId: string): Promise<DatasetDetail> {
         return request({
             url: `/web/dataset/datasetId/${datasetId}`,
+            method: "get",
+        });
+    },
+
+    // 获取热门与最新数据集（首页使用，无参数）
+    getHotAndNew(): Promise<HotAndNewDatasets> {
+        return request({
+            url: "/web/dataset/hot-and-new",
             method: "get",
         });
     },

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import { datasets, type DatasetSample } from "../data/datasets";
+import { computed, onMounted, ref } from "vue";
+import { datasetApi, type Dataset } from "../api/dataset";
+import type { DatasetSample } from "../data/datasets";
 import DatasetDrawer from "./datasets/drawer.vue";
-import HotSvg from "./datasets/hotSvg.vue";
-import NewSvg from "./datasets/newSvg.vue";
 import {
     Flame,
     Grid2x2Plus,
@@ -12,16 +11,58 @@ import {
     Astroid,
 } from "@lucide/vue";
 
-const totalDatasets = computed(() => datasets.length);
+// 热门 / 最新数据集原始数据（后端已按对应维度排序）
+const hottest = ref<Dataset[]>([]);
+const latest = ref<Dataset[]>([]);
+
+const loading = ref(true);
+const loadError = ref("");
+
+// 将样本规模格式化为紧凑的展示字符串，如 10000 -> 10K
+function formatInstances(n?: number | null): string {
+    if (n == null || Number.isNaN(n)) return "—";
+    if (n >= 1_000_000)
+        return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, "")}M`;
+    if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, "")}K`;
+    return String(n);
+}
+
+// 后端任务字符串（如「分类，回归」）拆分为标签数组
+function splitTasks(tasks?: string): string[] {
+    return (tasks ?? "")
+        .split(/[，,、;；]/)
+        .map((t) => t.trim())
+        .filter(Boolean);
+}
+
+// 后端数据集 -> 页面展示结构
+function toSample(d: Dataset): DatasetSample {
+    const id = d.datasetId ?? String(d.id ?? "");
+    return {
+        id,
+        name: d.name ?? "未命名数据集",
+        code: d.subjectArea ?? "",
+        description: d.description ?? "",
+        taskTypes: splitTasks(d.tasks),
+        instances: formatInstances(d.instances),
+        features: d.features ?? 0,
+        tag: d.tag ?? "DS",
+        releaseDate: (d.donatedDate ?? d.createTime ?? "").slice(0, 7),
+        downloads: d.views ?? 0,
+        href: `/datasets/${id}`,
+    };
+}
+
+const popularSamples = computed<DatasetSample[]>(() =>
+    hottest.value.map(toSample),
+);
+const newSamples = computed<DatasetSample[]>(() => latest.value.map(toSample));
 
 // 抽屉中展示的全部数据集
-const allPopularDatasets = computed<DatasetSample[]>(() =>
-    [...datasets].sort((a, b) => b.downloads - a.downloads),
+const allPopularDatasets = computed<DatasetSample[]>(
+    () => popularSamples.value,
 );
-
-const allNewDatasets = computed<DatasetSample[]>(() =>
-    [...datasets].sort((a, b) => (a.releaseDate < b.releaseDate ? 1 : -1)),
-);
+const allNewDatasets = computed<DatasetSample[]>(() => newSamples.value);
 
 const showDrawer = ref(false);
 const drawerTitle = ref("热门数据集");
@@ -41,16 +82,13 @@ function openDrawer(section: "popular" | "new") {
     showDrawer.value = true;
 }
 
-// 仿 UCI 首页：左栏按下载/引用量排序的「热门数据样本」
+// 首页左右两栏各取前 5 条
 const popularDatasets = computed<DatasetSample[]>(() =>
-    [...datasets].sort((a, b) => b.downloads - a.downloads).slice(0, 5),
+    popularSamples.value.slice(0, 5),
 );
 
-// 右栏按发布时间排序的「最新数据样本」
 const newDatasets = computed<DatasetSample[]>(() =>
-    [...datasets]
-        .sort((a, b) => (a.releaseDate < b.releaseDate ? 1 : -1))
-        .slice(0, 5),
+    newSamples.value.slice(0, 5),
 );
 
 interface SectionConfig {
@@ -78,6 +116,24 @@ const sections = computed<SectionConfig[]>(() => [
 const navigateToDataset = (id: string) => {
     window.open("/datasets/" + id, "_blank");
 };
+
+async function fetchDatasets() {
+    loading.value = true;
+    loadError.value = "";
+    try {
+        const res = await datasetApi.getHotAndNew();
+        hottest.value = res?.hottest ?? [];
+        latest.value = res?.latest ?? [];
+    } catch (e) {
+        hottest.value = [];
+        latest.value = [];
+        loadError.value = e instanceof Error ? e.message : "数据加载失败";
+    } finally {
+        loading.value = false;
+    }
+}
+
+onMounted(fetchDatasets);
 </script>
 
 <template>
@@ -94,14 +150,32 @@ const navigateToDataset = (id: string) => {
                 </h2>
             </div>
             <p class="text-fg-subtle max-w-md text-sm leading-relaxed">
-                实验室数据平台目前收录
-                {{ totalDatasets }}
-                个数据样本，覆盖多模态、具身智能、图学习等研究方向，
-                供组内及合作团队复现实验与开展基准测试。
+                <template v-if="loading">正在加载数据样本…</template>
+                <template v-else>
+                    实验室数据平台目前收录 12
+                    个数据样本，覆盖多模态、具身智能、图学习等研究方向，
+                    供组内及合作团队复现实验与开展基准测试。
+                </template>
             </p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div
+            v-if="loading"
+            class="card px-6 py-16 text-center text-sm text-fg-subtle"
+        >
+            正在加载数据集…
+        </div>
+        <div v-else-if="loadError" class="card px-6 py-16 text-center text-sm">
+            <p class="text-fg">{{ loadError }}</p>
+            <p class="mt-2 text-fg-subtle">未能获取数据集，请稍后重试。</p>
+        </div>
+        <div
+            v-else-if="false"
+            class="card px-6 py-16 text-center text-sm text-fg-subtle"
+        >
+            暂无数据集
+        </div>
+        <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div
                 v-for="section in sections"
                 :key="section.title"
@@ -148,22 +222,29 @@ const navigateToDataset = (id: string) => {
                             </p>
                             <div class="flex items-center gap-x-8 gap-y-2 mt-3">
                                 <span
-                                    class="flex flex-1 gap-1 items-center font-mono text-xs text-fg-faint"
+                                    class="flex flex-1 gap-1 items-center font-mono text-xs text-fg-faint min-w-0"
                                 >
                                     <ListSortDescending :size="12" />
-                                    {{ d.taskTypes.join(", ") }}
+                                    <!-- 文本单独处理 truncate -->
+                                    <span class="truncate">
+                                        {{ d.taskTypes.join(", ") }}
+                                    </span>
                                 </span>
                                 <span
-                                    class="flex flex-1 gap-1 items-center font-mono text-xs text-fg-faint"
+                                    class="flex flex-1 gap-1 items-center font-mono text-xs text-fg-faint min-w-0"
                                 >
                                     <Grid2x2 :size="12" />
-                                    {{ d.instances }}&thinsp;Instances
+                                    <span class="truncate">
+                                        {{ d.instances }}&thinsp;Instances
+                                    </span>
                                 </span>
                                 <span
-                                    class="flex flex-1 gap-1 items-center font-mono text-xs text-fg-faint"
+                                    class="flex flex-1 gap-1 items-center font-mono text-xs text-fg-faint min-w-0"
                                 >
                                     <Astroid :size="12" />
-                                    {{ d.features }}&thinsp;Features
+                                    <span class="truncate">
+                                        {{ d.features }}&thinsp;Features
+                                    </span>
                                 </span>
                             </div>
                         </div>
