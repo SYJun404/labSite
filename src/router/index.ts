@@ -13,11 +13,6 @@ const router = createRouter({
             name: "dataset-detail",
             component: () => import("../views/DatasetDetail.vue"),
         },
-        {
-            path: "/json-demo",
-            name: "json-demo",
-            component: () => import("../views/JsonDemo.vue"),
-        },
     ],
     scrollBehavior(to) {
         if (to.hash) {
