@@ -4,13 +4,14 @@ import {
     shallowRef,
     computed,
     watch,
-    onMounted,
     onBeforeUnmount,
     nextTick,
 } from "vue";
 import { buildGraph, explainError, CARD_W, HEAD_H, ROW_H } from "./graph";
 import { indexJson, pathAt } from "./locate";
 import type { Graph, JsonError, JsonIndex } from "./types";
+import type { DatasetDetail } from "../../api/dataset";
+import { usePreviewLink } from "../../composables/usePreviewLink";
 import JsonEditor from "./JsonEditor.vue";
 import JsonGraph from "./JsonGraph.vue";
 import JsonToolbar from "./JsonToolbar.vue";
@@ -21,12 +22,8 @@ defineOptions({ name: "Json4u" });
 
 const props = withDefaults(
     defineProps<{
-        /** 双向绑定：JSON 文本；传入对象/数组时会自动序列化 */
-        modelValue?: unknown;
-        /** 自动读取：远程/同源 .json 地址 */
-        src?: string;
-        /** 自动读取：File 对象（例如来自你自己的 <input type="file">） */
-        file?: File | null;
+        /** 数据集详情：从 overview.previewType / previewLink 读取 JSON 预览地址 */
+        d: DatasetDetail;
         /** 是否显示左侧文本编辑器 */
         showEditor?: boolean;
         /** light | dark | auto */
@@ -39,9 +36,6 @@ const props = withDefaults(
         autoCollapseThreshold?: number;
     }>(),
     {
-        modelValue: undefined,
-        src: "",
-        file: null,
         showEditor: true,
         theme: "auto",
         indent: 2,
@@ -51,8 +45,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-    "update:modelValue": [value: string];
-    load: [payload: { name: string; text: string; data: unknown }];
+    load: [payload: { text: string; data: unknown }];
     error: [err: unknown];
 }>();
 
@@ -60,7 +53,6 @@ const showModal = ref(false);
 const text = ref("");
 const parsed = shallowRef<unknown>(undefined);
 const error = ref<JsonError | null>(null);
-const fileName = ref("");
 const collapsed = ref<Set<string>>(new Set());
 const view = ref<InstanceType<typeof JsonGraph> | null>(null); // 内联图组件
 const modalView = ref<InstanceType<typeof JsonGraph> | null>(null); // 模态框图组件
@@ -68,9 +60,8 @@ const tf = ref({ x: 0, y: 0, k: 1 });
 const editor = ref<InstanceType<typeof JsonEditor> | null>(null);
 const activePath = ref<string | null>(null); // 当前选中的 JSON 路径（左右联动）
 const animating = ref(false);
-const showEditorRef = ref(props.showEditor ?? false);
+const showEditorRef = ref(true);
 
-let pathLen = 0;
 let fitPending = true;
 let timer: ReturnType<typeof setTimeout> | undefined;
 
@@ -105,12 +96,8 @@ function parseNow(src: string): boolean {
     }
 }
 
-function setText(
-    src: string,
-    { fit = true, name }: { fit?: boolean; name?: string } = {},
-) {
+function setText(src: string, { fit = true }: { fit?: boolean } = {}) {
     text.value = src;
-    if (name !== undefined) fileName.value = name;
     activePath.value = null;
     savedState = null; // 数据集已更换，之前的模态框恢复状态失效
     fitPending = fit;
@@ -119,7 +106,7 @@ function setText(
     // 数据过多时首次显示只展开 root，其余节点全部折叠
     collapsed.value = ok ? initialCollapsed(parsed.value) : new Set();
     if (ok && parsed.value !== undefined)
-        emit("load", { name: fileName.value, text: src, data: parsed.value });
+        emit("load", { text: src, data: parsed.value });
     if (!fit) return;
     if (!ok) fitPending = false;
 }
@@ -129,53 +116,29 @@ function onEdit(v: string) {
     clearTimeout(timer);
     timer = setTimeout(() => {
         fitPending = false;
-        if (parseNow(text.value)) emit("update:modelValue", text.value);
+        parseNow(text.value);
     }, 250);
 }
 
 function format() {
     if (parsed.value === undefined || error.value) return;
     text.value = JSON.stringify(parsed.value, null, props.indent);
-    emit("update:modelValue", text.value);
 }
 
-async function loadUrl(url: string) {
-    if (!url) return;
-    try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        let src = await res.text();
-        if (src.charCodeAt(0) === 0xfeff) src = src.slice(1);
-        setText(src, { name: url.split("/").pop()!.split("?")[0] });
-        emit("update:modelValue", src);
-    } catch (e) {
+// 仅支持 URL 数据源：按 previewType 监听预览地址并加载 JSON
+const { reload } = usePreviewLink(() => props.d, 2, {
+    reset: () => {
+        text.value = "";
+        parsed.value = undefined;
+        error.value = null;
+        collapsed.value = new Set();
+        activePath.value = null;
+    },
+    onText: (src) => setText(src),
+    onError: (e) => {
         error.value = { message: `加载失败：${(e as Error).message}` };
         emit("error", e);
-    }
-}
-
-watch(
-    () => props.src,
-    (u) => loadUrl(u),
-);
-watch(
-    () => props.modelValue,
-    (v) => {
-        if (v === undefined || v === null) return;
-        const s =
-            typeof v === "string" ? v : JSON.stringify(v, null, props.indent);
-        if (s !== text.value) setText(s);
     },
-);
-
-onMounted(() => {
-    if (props.modelValue !== undefined && props.modelValue !== null) {
-        const v = props.modelValue;
-        setText(
-            typeof v === "string" ? v : JSON.stringify(v, null, props.indent),
-        );
-    }
-    if (props.src) loadUrl(props.src);
 });
 
 /* ---------- 图 ---------- */
@@ -193,10 +156,6 @@ function initialCollapsed(value: unknown): Set<string> {
     const limit = props.autoCollapseThreshold;
     if (!limit || limit <= 0) return new Set();
     const paths = collectContainerPaths(value);
-    pathLen = paths.length;
-    if (paths.length > limit) {
-        showEditorRef.value = false;
-    }
     return paths.length > limit ? new Set(paths) : new Set();
 }
 
@@ -323,26 +282,19 @@ watch(graph, () => {
     }
 });
 
-// 打开模态框时按全屏尺寸自适应，关闭时恢复内联视图的初始状态
+/// 打开模态框时记录初始状态
 watch(showModal, (open) => {
     if (open) {
-        showEditorRef.value = true;
+        // 保存打开前的状态
         savedState = {
             tf: { ...tf.value },
             collapsed: new Set(collapsed.value),
             activePath: activePath.value,
         };
         nextTick(fit);
-        return;
+    } else {
+        nextTick(fit);
     }
-    if (pathLen > props.autoCollapseThreshold) {
-        showEditorRef.value = false;
-    }
-    if (!savedState) return;
-    tf.value = savedState.tf;
-    collapsed.value = savedState.collapsed;
-    activePath.value = savedState.activePath;
-    savedState = null;
 });
 
 function zoomAt(factor: number, cx: number, cy: number) {
@@ -448,7 +400,7 @@ const canvasStyle = computed(() => ({
 }));
 
 defineExpose({
-    loadUrl,
+    reload,
     setText,
     format,
     fit,
@@ -456,7 +408,7 @@ defineExpose({
 </script>
 
 <template>
-    <div class="j4u card max-h-[800px] min-h-[640px]" :data-theme="theme">
+    <div class="j4u card max-h-[875px] min-h-[640px]" :data-theme="theme">
         <div
             class="w-full bg-surface flex items-center justify-between px-8 py-6 text-left border-b border-border/60"
         >
@@ -472,7 +424,6 @@ defineExpose({
             </span>
         </div>
         <JsonToolbar
-            :file-name="fileName"
             @format="format"
             @zoom="zoomBtn"
             @fit="fit"
@@ -520,7 +471,6 @@ defineExpose({
     <BaseModal :width="100" :height="100" v-model="showModal" title="数据预览">
         <div class="j4u h-full" :data-theme="theme">
             <JsonToolbar
-                :file-name="fileName"
                 @format="format"
                 @zoom="zoomBtn"
                 @fit="fit"

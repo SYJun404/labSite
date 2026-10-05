@@ -32,6 +32,24 @@ const license = computed(() => props.d.license?.[0]);
             引用数据集
         </button>
 
+        <div v-if="d.creators?.length" class="card p-6">
+            <p
+                class="font-mono text-xs uppercase tracking-wide text-fg-faint mb-3"
+            >
+                Creators
+            </p>
+            <ul class="space-y-2.5">
+                <li
+                    v-for="c in creators"
+                    :key="c"
+                    class="flex items-center gap-1 text-sm font-mono text-fg-muted"
+                >
+                    <User class="text-fg-faint" :size="14" />
+                    {{ c }}
+                </li>
+            </ul>
+        </div>
+
         <div v-if="d.keywords?.length" class="card p-6">
             <p
                 class="font-mono text-xs uppercase tracking-wide text-fg-faint mb-3"
@@ -43,24 +61,6 @@ const license = computed(() => props.d.license?.[0]);
                     k
                 }}</span>
             </div>
-        </div>
-
-        <div v-if="d.creators?.length" class="card p-6">
-            <p
-                class="font-mono text-xs uppercase tracking-wide text-fg-faint mb-3"
-            >
-                Creators
-            </p>
-            <ul class="space-y-2.5">
-                <li
-                    v-for="c in creators"
-                    :key="c"
-                    class="flex items-center gap-1 text-sm text-fg"
-                >
-                    <User class="text-fg-faint" :size="14" />
-                    {{ c }}
-                </li>
-            </ul>
         </div>
 
         <div v-if="d.reference?.length" class="card p-6">

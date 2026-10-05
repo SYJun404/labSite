@@ -68,13 +68,6 @@
     min-width: 0;
 }
 
-.j4u-name {
-    color: var(--j4u-muted);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 220px;
-}
 .j4u-spacer {
     flex: 1;
 }

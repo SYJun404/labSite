@@ -5,14 +5,6 @@ import { onMounted } from "vue";
 
 defineOptions({ name: "Json4uToolbar" });
 
-withDefaults(
-    defineProps<{
-        /** 当前文件名，为空则不展示 */
-        fileName?: string;
-    }>(),
-    { fileName: "", disabled: false },
-);
-
 const emit = defineEmits<{
     format: [];
     /** 缩放因子，例如 1.25 / 0.8 */
@@ -37,9 +29,6 @@ onMounted(() => {
 
 <template>
     <div class="j4u-bar px-8 py-3.5 gap-2 border-b border-border/60">
-        <span v-if="fileName" class="j4u-name" :title="fileName">{{
-            fileName
-        }}</span>
         <ToolbarButton @click="emit('showPanel')"
             ><PanelLeft :size="16" />
         </ToolbarButton>

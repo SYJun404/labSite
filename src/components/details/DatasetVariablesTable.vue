@@ -40,7 +40,7 @@ const rows = computed(() => {
                 </button>
             </span>
         </div>
-        <div class="border-t border-border/60 overflow-x-auto">
+        <div class="border-t border-border/60 overflow-auto max-h-[780px]">
             <table class="w-full text-sm min-w-[640px]">
                 <thead>
                     <tr
@@ -49,7 +49,7 @@ const rows = computed(() => {
                         <th
                             v-for="(col, colIdx) in columnDefs"
                             :key="col.id"
-                            class="py-3 font-medium"
+                            class="sticky top-0 z-10 bg-surface py-3 font-medium"
                             :class="colIdx === 0 ? 'px-8' : 'px-4'"
                         >
                             {{ col.name }}

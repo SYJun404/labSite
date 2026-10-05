@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import type { DatasetDetail } from "../../api/dataset";
+import { usePreviewLink } from "../../composables/usePreviewLink";
 import BaseModal from "../shared/BaseModal.vue";
 import { Maximize } from "@lucide/vue";
 
@@ -21,32 +22,21 @@ function formatNumber(n: number): string {
     return n.toLocaleString("en-US");
 }
 
-watch(() => props.d.previewLink, load, { immediate: true });
-
 // 预览文件（CSV）单独请求，失败时静默降级、为空则不渲染预览卡片
-async function load(link?: string | null) {
-    columns.value = [];
-    rows.value = [];
-    totalRows.value = 0;
-
-    const previewType = props.d.overview?.previewType;
-    // previewType 为 1 表示表格预览；其它类型暂不处理
-    if (!link || (previewType != null && previewType !== 1)) return;
-
-    try {
-        const res = await fetch(link);
-        if (!res.ok) return;
-        const parsed = parseCsv(await res.text());
+usePreviewLink(() => props.d, 1, {
+    reset: () => {
+        columns.value = [];
+        rows.value = [];
+        totalRows.value = 0;
+    },
+    onText: (text) => {
+        const parsed = parseCsv(text);
         columns.value = parsed.columns;
         rows.value = parsed.rows.slice(0, PREVIEW_LIMIT);
         totalRows.value =
             parsed.rows.length || props.d.overview?.instances || 0;
-    } catch {
-        columns.value = [];
-        rows.value = [];
-        totalRows.value = 0;
-    }
-}
+    },
+});
 
 // 简易 CSV 解析：支持引号包裹、转义双引号、跨行字段，并自动识别分隔符（, ; \t）
 function parseCsv(text: string): { columns: string[]; rows: string[][] } {
@@ -154,7 +144,7 @@ function parseCsvRecords(text: string, delimiter: string): string[][] {
             <div class="overflow-x-auto">
                 <table class="w-full text-xs font-mono min-w-[900px]">
                     <thead>
-                        <tr class="text-left bg-surface-alt/70">
+                        <tr class="text-left bg-surface-alt">
                             <th
                                 class="px-4 py-2.5 font-semibold text-fg-subtle whitespace-nowrap"
                             >
@@ -210,16 +200,16 @@ function parseCsvRecords(text: string, delimiter: string): string[][] {
     >
         <table class="w-full text-sm font-mono">
             <thead>
-                <tr class="text-left bg-surface-alt/70">
+                <tr class="text-left bg-surface-alt">
                     <th
-                        class="sticky top-0 bg-surface-alt/70 px-4 py-3 font-semibold text-fg-subtle whitespace-nowrap z-10"
+                        class="sticky top-0 bg-surface-alt px-4 py-3 font-semibold text-fg-subtle whitespace-nowrap z-10"
                     >
                         #
                     </th>
                     <th
                         v-for="col in columns"
                         :key="col"
-                        class="sticky top-0 bg-surface-alt/70 px-4 py-3 font-semibold text-fg-subtle whitespace-nowrap z-10"
+                        class="sticky top-0 bg-surface-alt px-4 py-3 font-semibold text-fg-subtle whitespace-nowrap z-10"
                     >
                         {{ col }}
                     </th>

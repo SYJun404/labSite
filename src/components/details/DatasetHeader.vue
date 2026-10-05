@@ -9,11 +9,12 @@ defineProps<{
 <template>
     <div class="p-8 flex flex-col sm:flex-row sm:items-center gap-6">
         <div
-            class="w-20 h-20 shrink-0 rounded-2xl bg-signal-gradient flex items-center justify-center"
+            class="w-20 h-20 shrink-0 rounded-2xl bg-surface-alt border border-border flex items-center justify-center"
         >
-            <span class="font-display text-2xl font-semibold text-[#0A0B0F]">{{
-                d.overview?.tag
-            }}</span>
+            <span
+                class="font-display text-2xl font-semibold text-accent-blue"
+                >{{ d.overview?.tag }}</span
+            >
         </div>
         <div>
             <h1 class="font-display text-3xl md:text-4xl font-semibold text-fg">

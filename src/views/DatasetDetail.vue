@@ -11,6 +11,7 @@ import DatasetVariablesTable from "../components/details/DatasetVariablesTable.v
 import DatasetPreviewTable from "../components/details/DatasetPreviewTable.vue";
 import DatasetSidebar from "../components/details/DatasetSidebar.vue";
 import Footer from "../components/Footer.vue";
+import Json4u from "../components/jsonVisualization/Json4u.vue";
 
 const route = useRoute();
 
@@ -123,7 +124,13 @@ watch(() => String(route.params.id ?? ""), load, { immediate: true });
 
                 <!-- ============ 全宽内容 ============ -->
                 <DatasetVariablesTable :d="d" />
-                <DatasetPreviewTable :d="d" />
+                <!-- 根据previewType 展示不同的数据 -->
+
+                <DatasetPreviewTable
+                    v-if="d.overview?.previewType === 1"
+                    :d="d"
+                />
+                <Json4u v-if="d.overview?.previewType === 2" :d="d" />
             </div>
         </div>
         <Footer />

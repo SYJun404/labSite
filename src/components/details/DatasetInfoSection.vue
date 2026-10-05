@@ -32,7 +32,9 @@ const isOpen = ref(true);
                 <p v-if="item.title" class="text-fg font-medium text-sm mb-1.5">
                     {{ item.title }}
                 </p>
-                <p class="text-fg-subtle text-sm leading-relaxed">
+                <p
+                    class="text-fg-subtle text-sm leading-relaxed whitespace-pre-line"
+                >
                     {{ item.content }}
                 </p>
             </div>
