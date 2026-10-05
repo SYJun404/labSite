@@ -201,6 +201,8 @@ function parseCsvRecords(text: string, delimiter: string): string[][] {
 
     <!-- 全屏模态框 -->
     <BaseModal
+        :width="100"
+        :height="100"
         v-if="columns.length"
         v-model="showModal"
         title="数据预览"

@@ -77,7 +77,7 @@ const rows = computed(() => {
     </div>
 
     <!-- 全屏模态框 -->
-    <BaseModal v-model="showModal" title="字段说明">
+    <BaseModal :width="100" :height="100" v-model="showModal" title="字段说明">
         <table class="w-full text-sm min-w-[640px]">
             <thead>
                 <tr
