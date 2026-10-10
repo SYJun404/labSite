@@ -16,7 +16,7 @@ import { lab } from "../data/research";
                         lab.nameZh
                     }}</span>
                 </div>
-                <p class="text-sm text-fg-subtle leading-relaxed max-w-xs">
+                <p class="text-sm text-fg-subtle leading-relaxed max-w-xl">
                     {{ lab.nameEn }}
                 </p>
             </div>

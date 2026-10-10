@@ -83,7 +83,7 @@ const license = computed(() => props.d.license?.[0]);
                             {{ p.title }}
                         </p>
                         <p class="text-xs text-fg-subtle leading-relaxed">
-                            By {{ p.authors }}.
+                            By {{ p.authors }}
                             <template v-if="p.year">{{ p.year }}</template>
                         </p>
                         <p
