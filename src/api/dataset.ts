@@ -18,6 +18,13 @@ export interface DatasetLicense {
     description?: string;
 }
 
+// 数据联系方式
+export interface DatasetDownloadInfo {
+    contact?: string;
+    address?: string;
+    explanation?: string;
+}
+
 // 参考文献
 export interface DatasetReference {
     title?: string;
@@ -90,6 +97,7 @@ export interface DatasetDetail {
     license?: DatasetLicense[] | null;
     reference?: DatasetReference[] | null;
     keywords?: string[] | null;
+    downloadInfo?: DatasetDownloadInfo | null;
 }
 
 // 数据集 API
